@@ -1,0 +1,31 @@
+## Create a function that receives a text and returns the frequency of each word in the text
+
+def word_counter(file):
+
+    ## Define a dictionary to append the words as keys and the frequency as value
+    counter_dictionary = {}
+
+    ## Open the file
+    text = open(file)
+
+    ## Double for loop to get each word from the text and create a key with value 1 in the dictionary or +1 the value of the key in the dictionary
+    for line in text: 
+        for word in line.split():
+            if counter_dictionary.get(word) == None:
+                counter_dictionary[word] = 1
+            else:
+                counter_dictionary[word] += 1
+
+    return counter_dictionary
+    text.close
+
+dictionary_counter_text = word_counter("Random_Convo")
+
+
+## Create a function that uses the previously generated dictionary and prints a bars diagram of the frequencies
+
+def frequency_generator(counter):
+    for word in counter: 
+        print(word + " | " + "*" * counter[word])
+
+frequency_generator(dictionary_counter_text)
