@@ -1,31 +1,56 @@
+#%%
+
 ## Create a function that receives a text and returns the frequency of each word in the text
+
+from distutils.command.clean import clean
+
 
 def word_counter(file):
 
     ## Define a dictionary to append the words as keys and the frequency as value
     counter_dictionary = {}
 
+    ## Create a string where we are going to put the function without the strange characters
+    clean_text = ""
+
     ## Open the file
     text = open(file)
 
-    ## Double for loop to get each word from the text and create a key with value 1 in the dictionary or +1 the value of the key in the dictionary
-    for line in text: 
-        for word in line.split():
-            if counter_dictionary.get(word) == None:
-                counter_dictionary[word] = 1
-            else:
-                counter_dictionary[word] += 1
+    ## Create a for loop to clean the text of strange characters and store it in the clean_text variable
+    for line in text:
+        for word in line:
+            for character in word:
+                if character.isalpha() or character == '"' or character == " " or character == "\n":
+                    clean_text = clean_text + character
 
-    return counter_dictionary
+    ## Double for loop to get each word from the text and create a key with value 1 in the dictionary or +1 the value of the key in the dictionary
+    for word in clean_text.split(): 
+        if word in counter_dictionary:
+            counter_dictionary[word] += 1
+        else:
+            counter_dictionary[word] = 1
+
+    ## Close the file
     text.close
 
+    ## Return the dictionary with the words and the count of how many times they are in the text
+    return counter_dictionary
+
 dictionary_counter_text = word_counter("Random_Convo")
+print(dictionary_counter_text)
+#%%
 
 
 ## Create a function that uses the previously generated dictionary and prints a bars diagram of the frequencies
-
 def frequency_generator(counter):
+    longest = 0
+    
+    for word in counter:
+        if len(word) > longest:
+            longest = len(word)
+
     for word in counter: 
-        print(word + " | " + "*" * counter[word])
+        number_of_spaces = longest - len(word)
+        print(word + " " * number_of_spaces + " | " + "*" * counter[word])
 
 frequency_generator(dictionary_counter_text)
